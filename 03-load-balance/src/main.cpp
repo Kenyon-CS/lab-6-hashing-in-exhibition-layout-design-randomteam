@@ -6,6 +6,23 @@
 
 #include "assigner.hpp"
 
+/*
+Students: Jared and Leo
+
+Description of changes for the lab: 
+ - Kept the core hashing and chaining logic from the starter files completely intact.
+ - Implemented the lab deliverables in main() by automating the testing for both the small and large datasets.
+ - Built a text-based histogram generator to visualize the layout distribution.
+ - Added comparative experiments (testing weak vs. strong hashes, and scaling the number of rooms) to generate the required data for our final reflection.
+
+ Responsibility: 
+- Leo: Write the general test program
+- Jared: Revise the code and write the reflection
+
+Statement: Each person contributed about equally to the development of the program by participating in parts of the program writing and conceptual suggestions. 
+We all followed the guidelines for Pair Programming in the process of collaboration.
+*/
+
 // Usage:
 //   ./03_load_balance data/small_artworks.txt 3 2
 //   ./03_load_balance data/large_artworks.txt 10 6
@@ -57,9 +74,36 @@ int main(int argc, char** argv) {
     std::cout << "\nmax load = " << result.max_load << "\n";
     std::cout << "rooms overflowing (load > B) = " << result.overflows << "\n";
 
-    std::cout << "\nTODO (students):\n"
-              << " - Try multiple (a,b) pairs; compare max load / overflow count.\n"
-              << " - Compare with a non-random/poor hash (e.g., room = id % m).\n"
-              << " - Run experiments for different alpha = n/m and bucket size B.\n";
+    // Histogram deliverable
+    std::cout << "\nDistribution Histogram:\n";
+    for (std::size_t r = 0; r < result.room_to_artworks.size(); r++) {
+        std::cout << "Room " << r << (r < 10 ? "  | " : " | ");
+        for (size_t i = 0; i < result.room_to_artworks[r].size(); ++i) {
+            std::cout << "*";
+        }
+        std::cout << " (" << result.room_to_artworks[r].size() << ")\n";
+    }
+
+    // Experiments
+    std::cout << "\nAdditional Experiments for Report: \n";
+
+    // Compare with a non-random and poor hash (e.g., room = id % m).
+    HashedAssigner weak_hash(1ULL, 0ULL, 4294967311ULL); 
+    auto weak_res = weak_hash.assign(ids, m_rooms, B);
+    std::cout << "[Poor Hash] a=1, b=0 (id % m) --- Max load: " << weak_res.max_load 
+              << ", Overflows: " << weak_res.overflows << "\n";
+
+    // Try multiple (a,b) pairs and compare max load or overflow count.
+    HashedAssigner alt_hash(31ULL, 17ULL, 4294967311ULL); 
+    auto alt_res = alt_hash.assign(ids, m_rooms, B);
+    std::cout << "[Alt Hash]  a=31, b=17 --- Max load: " << alt_res.max_load 
+              << ", Overflows: " << alt_res.overflows << "\n";
+
+    // Run experiments for different alpha = n/m and bucket size B.
+    std::uint32_t more_rooms = m_rooms * 2;
+    auto alpha_res = assigner.assign(ids, more_rooms, B);
+    std::cout << "[Low Alpha] Doubled Rooms (m=" << more_rooms << ") --- Max load: " << alpha_res.max_load 
+              << ", Overflows: " << alpha_res.overflows << "\n";
+
     return 0;
 }

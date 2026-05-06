@@ -1,0 +1,60 @@
+small_artworks.txt data set with m = 3 alpha = 2: 
+n (artworks) = 6
+m (rooms)    = 3
+alpha = n/m  = 2
+bucket size B = 2
+
+Room 0 load=1 : 6 
+Room 1 load=2 : 1 2 
+Room 2 load=3 : 3 4 5 
+
+max load = 3
+rooms overflowing (load > B) = 1
+
+Distribution Histogram:
+Room 0  | * (1)
+Room 1  | ** (2)
+Room 2  | *** (3)
+
+Additional Experiments for Report: 
+[Poor Hash] a=1, b=0 (id % m) --- Max load: 2, Overflows: 0
+[Alt Hash]  a=31, b=17 --- Max load: 2, Overflows: 0
+[Low Alpha] Doubled Rooms (m=6) --- Max load: 3, Overflows: 1
+
+
+large_artworks.txt data set with m = 10 alpha = 6: 
+n (artworks) = 200
+m (rooms)    = 10
+alpha = n/m  = 20
+bucket size B = 6
+
+Room 0 load=21 : 11 12 13 37 38 39 63 64 65 90 91 116 ...
+Room 1 load=20 : 14 15 40 41 66 67 68 92 93 94 118 119 ...
+Room 2 load=21 : 16 17 18 42 43 44 69 70 95 96 121 122 ...
+Room 3 load=18 : 19 20 45 46 47 71 72 73 97 98 99 124 ...
+Room 4 load=18 : 21 22 23 48 49 74 75 100 101 102 126 127 ...
+Room 5 load=19 : 24 25 26 50 51 52 76 77 78 103 104 129 ...
+Room 6 load=19 : 1 2 27 28 53 54 79 80 81 105 106 107 ...
+Room 7 load=22 : 3 4 5 29 30 31 55 56 57 82 83 108 ...
+Room 8 load=21 : 6 7 32 33 34 58 59 60 84 85 86 110 ...
+Room 9 load=21 : 8 9 10 35 36 61 62 87 88 89 113 114 ...
+
+max load = 22
+rooms overflowing (load > B) = 10
+
+Distribution Histogram:
+Room 0  | ********************* (21)
+Room 1  | ******************** (20)
+Room 2  | ********************* (21)
+Room 3  | ****************** (18)
+Room 4  | ****************** (18)
+Room 5  | ******************* (19)
+Room 6  | ******************* (19)
+Room 7  | ********************** (22)
+Room 8  | ********************* (21)
+Room 9  | ********************* (21)
+
+Additional Experiments for Report: 
+[Poor Hash] a=1, b=0 (id % m) --- Max load: 20, Overflows: 10
+[Alt Hash]  a=31, b=17 --- Max load: 20, Overflows: 10
+[Low Alpha] Doubled Rooms (m=20) --- Max load: 12, Overflows: 20
